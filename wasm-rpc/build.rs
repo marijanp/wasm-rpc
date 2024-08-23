@@ -4,7 +4,7 @@ use std::process::Command;
 use std::process::Stdio;
 
 fn main() -> Result<()> {
-    let wasm_ast_root = find_package_root("golem-wasm-ast");
+    //let wasm_ast_root = find_package_root("golem-wasm-ast");
 
     let mut config = prost_build::Config::new();
     config.extern_path(".wasm.ast", "::golem_wasm_ast::analysis::protobuf");
@@ -19,7 +19,7 @@ fn main() -> Result<()> {
             "proto/wasm/rpc/witvalue.proto",
             "proto/wasm/rpc/type_annotated_value.proto",
         ],
-        &[&format!("{wasm_ast_root}/proto"), &"proto".to_string()],
+        &[&format!("./proto"), &"proto".to_string()],
     )?;
     Ok(())
 }
