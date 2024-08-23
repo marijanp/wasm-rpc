@@ -1,5 +1,7 @@
 use cargo_metadata::MetadataCommand;
 use std::io::Result;
+use std::process::Command;
+use std::process::Stdio;
 
 fn main() -> Result<()> {
     let wasm_ast_root = find_package_root("golem-wasm-ast");
@@ -23,11 +25,21 @@ fn main() -> Result<()> {
 }
 
 fn find_package_root(name: &str) -> String {
+    let output = Command::new("cargo")
+        .arg("metadata")
+        .arg("--manifest-path")
+        .arg("./Cargo.toml")
+        .arg("--offline")
+        .output()  // Run the command and capture the output
+        .expect("Failed to execute command");
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    println!("{}", stdout);
     let metadata = MetadataCommand::new()
         .manifest_path("./Cargo.toml")
-        .other_options(vec!["--offline".to_string()])
+        .verbose(true)
+        .other_options(vec!["--offline".to_string(), "--frozen".to_string()])
         .exec()
-        .unwrap();
+        .expect("giggi");
     let package = metadata.packages.iter().find(|p| p.name == name).unwrap();
     package.manifest_path.parent().unwrap().to_string()
 }
