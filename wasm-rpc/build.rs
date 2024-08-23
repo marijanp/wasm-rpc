@@ -25,6 +25,7 @@ fn main() -> Result<()> {
 fn find_package_root(name: &str) -> String {
     let metadata = MetadataCommand::new()
         .manifest_path("./Cargo.toml")
+        .other_options(vec!["--offline".to_string()])
         .exec()
         .unwrap();
     let package = metadata.packages.iter().find(|p| p.name == name).unwrap();
