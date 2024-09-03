@@ -24,7 +24,7 @@ fn main() -> Result<()> {
 
 fn find_package_root(name: &str) -> String {
     let metadata = MetadataCommand::new()
-        .manifest_path("./Cargo.toml")
+        .manifest_path(std::env!("CARGO_MANIFEST_DIR").to_owned() + "/Cargo.toml")
         .verbose(true)
         .exec()
         .unwrap();
