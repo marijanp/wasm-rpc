@@ -1,8 +1,9 @@
 use cargo_metadata::MetadataCommand;
 use std::io::Result;
+use std::env;
 
 fn main() -> Result<()> {
-    let wasm_ast_root = find_package_root("golem-wasm-ast");
+    let wasm_ast_root = env::var("GOLEM_WASM_AST_ROOT").unwrap();
 
     let mut config = prost_build::Config::new();
     config.extern_path(".wasm.ast", "::golem_wasm_ast::analysis::protobuf");
